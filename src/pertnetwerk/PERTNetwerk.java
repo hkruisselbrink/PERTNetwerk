@@ -1,42 +1,46 @@
 package pertnetwerk;
 
-import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import genericgraph.GenericGraph;
 
 
 public class PERTNetwerk extends GenericGraph<int[]> {
 	
-	private ArrayList<String> startingPoints;
+	private Set<String> startPoints;
+	private Set<String> endPoints;
 	
 	public PERTNetwerk() {
 		super();
-		startingPoints = new ArrayList<String>();
+		startPoints = new HashSet<String>();
+		endPoints = new HashSet<String>();
 	}
 	
 	public void addStartingPoint(String name) {
 		addNode(name);
-		startingPoints.add(name);
+		startPoints.add(name);
 	}
 	
 	public void addActivity(String from, String to, int weight) {
-		if(getNode(to) == null) {
+		if(getNode(to) == null && weight > 0) {
 			addNode(to);
 			addEdge(from, to, weight);
+			if(endPoints.contains(from)) {
+				endPoints.remove(from);
+			}
+			if(!endPoints.contains(to)) {
+				endPoints.add(to);
+			}
 		} else {
+			if(weight <= 0) {
+				System.err.println("PERTNetwerk addActivity(): weight moet hoger dan 0 zijn");
+				return;
+			}
 			addEdge(from, to, weight);
-		}
-	}
-	
-	public int getActivityTime(String from, String to) {
-		return getWeight(from, to);
-	}
-	
-	public void setTimes(String name, int[] a) {
-		if(a.length == 2) {
-			setData(name, a);
-		} else {
-			System.err.println("Foute array.length, moet 2 zijn");
+			if(endPoints.contains(from)) {
+				endPoints.remove(from);
+			}
 		}
 	}
 	
@@ -45,11 +49,11 @@ public class PERTNetwerk extends GenericGraph<int[]> {
 	}
 	
 	public void vroegsteTijden() {
-		ArrayList<String> nodesLeft = new ArrayList<String>();
-		ArrayList<String> nodesToAdd = new ArrayList<String>();
+		Set<String> nodesLeft = new HashSet<String>();
+		Set<String> nodesToAdd = new HashSet<String>();
 		
 		//nodesLeft vullen met starting points en data van starting points op [0, 0] zetten
-		for(String start : startingPoints) {
+		for(String start : startPoints) {
 			setData(start, new int[]{0, 0});
 			nodesLeft.add(start);
 		}
@@ -78,5 +82,49 @@ public class PERTNetwerk extends GenericGraph<int[]> {
 			}
 			nodesToAdd.clear();
 		}
+	}
+	
+	
+	
+	public void laatsteTijden() {
+		Set<String> nodesLeft = new HashSet<String>();
+		Set<String> nodesToAdd = new HashSet<String>();
+		
+		//nodesLeft vullen met endPoints en vroegste- en laatsteTijd gelijk maken
+		for(String end : endPoints) {
+			nodesLeft.add(end);
+			int[] data = getData(end);
+			if(data != null) {
+				data[1] = data[0];
+			} else {
+				System.err.println("PERTNetwerk laatsteTijden(): Eerst vroegste tijden uitrekenen");
+				return;
+			}
+			
+		}
+		
+		while(nodesLeft.size() > 0) {
+		
+			for(String node : nodesLeft) {
+		
+				for(String parent : getParents(node)) {
+					nodesToAdd.add(parent);
+					int[] data = getData(parent);
+					int laatsteTijd = getData(node)[1] - getWeight(parent, node);
+					if(data[1] == 0 && !startPoints.contains(parent)) {
+						data[1] = Integer.MAX_VALUE;
+					}
+					if(data[1] > laatsteTijd) {
+						data[1] = laatsteTijd;
+					}
+				}
+			}
+			nodesLeft.clear();
+			for(String s : nodesToAdd) {
+				nodesLeft.add(s);
+			}
+			nodesToAdd.clear();
+		}
+		
 	}
 }
