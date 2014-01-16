@@ -1,5 +1,6 @@
 package pertnetwerk;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -23,7 +24,7 @@ public class PERTNetwerk extends GenericGraph<int[]> {
 	}
 	
 	public void addActivity(String from, String to, int weight) {
-		if(getNode(to) == null && weight > 0) {
+		if(!contains(to) && weight > 0) {
 			addNode(to);
 			addEdge(from, to, weight);
 			if(endPoints.contains(from)) {
@@ -37,16 +38,19 @@ public class PERTNetwerk extends GenericGraph<int[]> {
 				System.err.println("PERTNetwerk addActivity(): weight moet hoger dan 0 zijn");
 				return;
 			}
-			addEdge(from, to, weight);
-			if(endPoints.contains(from)) {
-				endPoints.remove(from);
+			if(!this.areConnected(to, from)) {			//Checken of er niet een loop ontstaat
+				addEdge(from, to, weight);
+				if(endPoints.contains(from)) {
+					endPoints.remove(from);
+				}
+			} else {
+				System.err.println("PERTNetwerk addActivity(): loops niet toegestaan");
+				return;
 			}
 		}
 	}
 	
-	public int[] getTimes(String name) {
-		return getData(name);
-	}
+	
 	
 	public void vroegsteTijden() {
 		Set<String> nodesLeft = new HashSet<String>();
@@ -74,7 +78,6 @@ public class PERTNetwerk extends GenericGraph<int[]> {
 						setData(child, new int[]{vroegsteTijd, 0});
 					}
 				}
-				
 			}
 			nodesLeft.clear();
 			for(String s : nodesToAdd) {
@@ -100,7 +103,6 @@ public class PERTNetwerk extends GenericGraph<int[]> {
 				System.err.println("PERTNetwerk laatsteTijden(): Eerst vroegste tijden uitrekenen");
 				return;
 			}
-			
 		}
 		
 		while(nodesLeft.size() > 0) {
@@ -125,6 +127,9 @@ public class PERTNetwerk extends GenericGraph<int[]> {
 			}
 			nodesToAdd.clear();
 		}
-		
+	}
+	
+	public String getTimes(String name) {
+		return Arrays.toString(getData(name));
 	}
 }

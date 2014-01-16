@@ -1,7 +1,5 @@
 package apl;
 
-import java.util.Arrays;
-
 import pertnetwerk.PERTNetwerk;
 
 public class Apl {
@@ -24,13 +22,13 @@ public class Apl {
 		p.vroegsteTijden();
 		p.laatsteTijden();
 		
-		System.out.println("A:\t" + Arrays.toString(p.getTimes("A")));
-		System.out.println("B:\t" + Arrays.toString(p.getTimes("B")));
-		System.out.println("C:\t" + Arrays.toString(p.getTimes("C")));
-		System.out.println("D:\t" + Arrays.toString(p.getTimes("D")));
-		System.out.println("E:\t" + Arrays.toString(p.getTimes("E")));
-		System.out.println("F:\t" + Arrays.toString(p.getTimes("F")));
-		System.out.println("G:\t" + Arrays.toString(p.getTimes("G")));
+		System.out.println("A:\t" + p.getTimes("A"));
+		System.out.println("B:\t" + p.getTimes("B"));
+		System.out.println("C:\t" + p.getTimes("C"));
+		System.out.println("D:\t" + p.getTimes("D"));
+		System.out.println("E:\t" + p.getTimes("E"));
+		System.out.println("F:\t" + p.getTimes("F"));
+		System.out.println("G:\t" + p.getTimes("G"));
 	}
 	
 }

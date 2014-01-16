@@ -16,6 +16,18 @@ public class Node<T> {
 		this.name = name;
 	}
 	
+	protected String getName() {
+		return name;
+	}
+	
+	protected void setData(T t) {
+		this.t = t;
+	}
+	
+	protected T getData() {
+		return t;
+	}
+	
 	protected void addEdge(Edge<T> edge) {
 		edge.target().addParent(this);
 		edges.add(edge);
@@ -29,8 +41,14 @@ public class Node<T> {
 		return parents;
 	}
 	
-	protected String getName() {
-		return name;
+	protected Edge<T> getEdge(Node<T> node) {
+		Edge<T> edge = null;
+		for(Edge<T> e : edges) {
+			if(e.target().equals(node)) {
+				edge = e;
+			}
+		}
+		return edge;
 	}
 	
 	protected int getWeight(Node<T> node) {
@@ -41,16 +59,6 @@ public class Node<T> {
 			}
 		}
 		return weight;
-	}
-	
-	protected Edge<T> getEdge(Node<T> node) {
-		Edge<T> edge = null;
-		for(Edge<T> e : edges) {
-			if(e.target().equals(node)) {
-				edge = e;
-			}
-		}
-		return edge;
 	}
 	
 	protected Set<Node<T>> getChildren() {
@@ -73,13 +81,5 @@ public class Node<T> {
 			}
 		}
 		return isConnected;
-	}
-	
-	protected T getData() {
-		return t;
-	}
-	
-	protected void setData(T t) {
-		this.t = t;
 	}
 }

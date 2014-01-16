@@ -13,6 +13,14 @@ public class GenericGraph<T>{
 		nodes = new HashMap<String, Node<T>>();
 	}
 	
+	protected int size() {
+		return nodes.size();
+	}
+	
+	protected boolean contains(String key) {
+		return nodes.containsKey(key);
+	}
+	
 	protected void addNode(String name){
 		if(!nodes.containsKey(name)) {
 			nodes.put(name, new Node<T>(name));
@@ -37,20 +45,26 @@ public class GenericGraph<T>{
 		}
 	}
 	
-	protected void setData(String key, T t) {
-		if(nodes.containsKey(key)) {
-			nodes.get(key).setData(t);
+	protected int getWeight(String from, String to) {
+		if(nodes.containsKey(from) && nodes.containsKey(to)) {
+			return nodes.get(from).getEdge(nodes.get(to)).weight();
 		} else {
-			throw new RuntimeException("Node \"" + key + "\" does not exist");
+			if(!nodes.containsKey(from)) {
+				throw new RuntimeException("Node \"" + from + "\" does not exist");
+			}
+			throw new RuntimeException("Node \"" + to + "\" does not exist");
 		}
 	}
 	
-	protected T getData(String key) {
-		if(nodes.containsKey(key)) {
-			return nodes.get(key).getData();
+	protected boolean areConnected(String from, String to) {
+		if(nodes.containsKey(from) && nodes.containsKey(to)) {
+			return nodes.get(from).isConnectedTo(nodes.get(to));
 		} else {
-			throw new RuntimeException("Node \"" + key + "\" does not exist");
-		}	
+			if(!nodes.containsKey(from)) {
+				throw new RuntimeException("Node \"" + from + "\" does not exist");
+			}
+			throw new RuntimeException("Node \"" + to + "\" does not exist");
+		}
 	}
 	
 	protected Set<String> getChildren(String key) {
@@ -77,33 +91,19 @@ public class GenericGraph<T>{
 		}	
 	}
 	
-	protected boolean areConnected(String from, String to) {
-		if(nodes.containsKey(from) && nodes.containsKey(to)) {
-			return nodes.get(from).isConnectedTo(nodes.get(to));
+	protected void setData(String key, T t) {
+		if(nodes.containsKey(key)) {
+			nodes.get(key).setData(t);
 		} else {
-			if(!nodes.containsKey(from)) {
-				throw new RuntimeException("Node \"" + from + "\" does not exist");
-			}
-			throw new RuntimeException("Node \"" + to + "\" does not exist");
+			throw new RuntimeException("Node \"" + key + "\" does not exist");
 		}
 	}
 	
-	protected int getWeight(String from, String to) {
-		if(nodes.containsKey(from) && nodes.containsKey(to)) {
-			return nodes.get(from).getEdge(nodes.get(to)).weight();
+	protected T getData(String key) {
+		if(nodes.containsKey(key)) {
+			return nodes.get(key).getData();
 		} else {
-			if(!nodes.containsKey(from)) {
-				throw new RuntimeException("Node \"" + from + "\" does not exist");
-			}
-			throw new RuntimeException("Node \"" + to + "\" does not exist");
-		}
-	}
-	
-	protected int size() {
-		return nodes.size();
-	}
-	
-	protected Node<T> getNode(String key) {
-		return nodes.get(key);
+			throw new RuntimeException("Node \"" + key + "\" does not exist");
+		}	
 	}
 }
