@@ -1,7 +1,6 @@
 package pertnetwerk;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import genericgraph.GenericGraph;
 
@@ -79,24 +78,5 @@ public class PERTNetwerk extends GenericGraph<int[]> {
 			}
 			nodesToAdd.clear();
 		}
-	}
-	
-	public static void main(String args[]) {
-		PERTNetwerk p = new PERTNetwerk();
-		
-		p.addStartingPoint("A");
-		
-		p.addActivity("A", "B", 1);
-		p.addActivity("A", "C", 3);
-		
-		p.addActivity("B", "D", 1);
-		p.addActivity("C", "D", 1);
-		
-		p.vroegsteTijden();
-		
-		System.out.println(Arrays.toString(p.getTimes("D")));
-		
-		int[] dataA = p.getTimes("A");
-		int[] dataB = p.getTimes("B");
 	}
 }
