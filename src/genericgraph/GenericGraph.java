@@ -9,7 +9,7 @@ public class GenericGraph<T>{
 
 	private Map<String, Node<T>> nodes;
 	
-	public GenericGraph() {
+	protected GenericGraph() {
 		nodes = new HashMap<String, Node<T>>();
 	}
 	
