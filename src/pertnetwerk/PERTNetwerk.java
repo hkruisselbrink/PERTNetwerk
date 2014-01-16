@@ -93,6 +93,11 @@ public class PERTNetwerk extends GenericGraph<int[]> {
 		Set<String> nodesLeft = new HashSet<String>();
 		Set<String> nodesToAdd = new HashSet<String>();
 		
+		//Startingpoints data[1] vast instellen naar Integer.MAX_VALUE
+		for(String start : startPoints) {
+			getData(start)[1] = Integer.MAX_VALUE;
+		}
+		
 		//nodesLeft vullen met endPoints en vroegste- en laatsteTijd gelijk maken
 		for(String end : endPoints) {
 			nodesLeft.add(end);
