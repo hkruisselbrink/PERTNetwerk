@@ -77,7 +77,7 @@ public class Node<T> {
 	
 	/**
 	 * Geeft een Edge terug uit de edges-Set als Edge.target() gelijk is aan de meegegeven Node. 
-	 * Meer plat, geeft de edge die zich "tussen" deze node en de meegegeven node bevindt 
+	 * Meer plat, geeft de edge die zich "tussen" deze Node en de meegegeven Node bevindt 
 	 * 
 	 * @param node de Node om te zoeken in de Set van Edges in deze Node
 	 * @return voor iedere edge uit de edges-Set van deze Node: als edge.target().equals(node), dan return edge; anders return null
@@ -96,7 +96,7 @@ public class Node<T> {
 	 * Haalt de Edge op die de meegegeven Node bevat en geeft hier de Edge.weight() van terug
 	 * 
 	 * @param node de Node om te zoeken in de Set van Edges in deze Node
-	 * @return de weight-value van de Edge die bij de meegegeven Node hoort
+	 * @return de weight-variabele van de Edge wiens Edge.target().equals(node)
 	 */
 	protected int getWeight(Node<T> node) {
 		return getEdge(node).weight();
@@ -118,7 +118,7 @@ public class Node<T> {
 	/**
 	 * Een recursieve methode die berekent of deze Node "gekoppeld" is aan de meegegeven Node. 
 	 * Gekoppeld wil zeggen: wanneer de meegegeven Node zich bevindt in de edges-Set van deze Node. De methode geeft dan true terug.
-	 * Als de meegegeven Node niet voorkomt in deze edges-Set maar de Set.size() > 0, dan wordt isConnectedTo() aangeroepen op iedere child van deze Node.
+	 * Als de meegegeven Node niet voorkomt in deze edges-Set maar de Set.size() > 0, dan wordt child.isConnectedTo(node) aangeroepen op iedere child van deze Node.
 	 * Als de meegegeven Node helemaal niet gevonden wordt, dan wordt false terug gegeven.
 	 * 
 	 * @param node de op te zoeken node
@@ -129,8 +129,8 @@ public class Node<T> {
 		if(getEdge(node) != null) {
 			isConnected = true;
 		} else {
-			for(Edge<T> e : edges) {
-				if(e.target().isConnectedTo(node)) {
+			for(Node<T> n : getChildren()) {
+				if(n.isConnectedTo(node)) {
 					isConnected = true;
 				}
 			}
