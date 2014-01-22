@@ -13,6 +13,10 @@ public class GenericGraph<T>{
 		nodes = new HashMap<String, Node<T>>();
 	}
 	
+	protected Set<String> getNodes() {
+		return nodes.keySet();
+	}
+	
 	protected int size() {
 		return nodes.size();
 	}

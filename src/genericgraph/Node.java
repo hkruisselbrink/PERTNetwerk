@@ -48,7 +48,8 @@ public class Node<T> {
 	}
 	
 	/**
-	 * Voegt de meegegeven Edge toe aan de edges-Set van deze Node
+	 * Voegt de meegegeven Edge toe aan de edges-Set van deze Node. 
+	 * Voegt zichzelf ook toe aan de parents van de target van de meegegeven Edge.
 	 * 
 	 * @param edge de toe te voegen Edge
 	 */
