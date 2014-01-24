@@ -103,17 +103,19 @@ public class PERTNetwerk extends GenericGraph<int[]> {
 	public void laatsteTijden() {
 		if(route.size() != 0) {
 			
-			for(String key : route) {
-				if(getChildren(key).size() != 0) {
-					int[] data = getData(key);
-					if(data != null) {
-						data[1] = Integer.MAX_VALUE;
-					}
-				} else {
-					int[] data = getData(key);
-					if(data != null) {
-						data[1] = data[0];
-					}
+			int allerLaatsteTijd = 0;;
+			
+			for(String key : getNodes()) {
+				int[] data = getData(key);
+				if(data != null && data[0] > allerLaatsteTijd) {
+					allerLaatsteTijd = data[0];
+				}
+			}
+			
+			for(String key : getNodes()) {
+				int[] data = getData(key);
+				if(data != null) {
+					data[1] = allerLaatsteTijd;
 				}
 			}
 			
